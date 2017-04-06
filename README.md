@@ -3,6 +3,8 @@
 This plugin simply takes a base filename in an Ember.js project and will open
 a grid of windows for each realated file.
 
+![animated screen shot](https://sukima.github.io/vim-emberlayout/vim-emberlayout.gif)
+
 ## Commands, Mappings and Configuration
 
 Read the [help][txt-doc] to know more.
