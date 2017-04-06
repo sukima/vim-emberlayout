@@ -1,0 +1,77 @@
+*emberlayout.txt*                                Open Ember files in a grid
+
+CONTENTS
+
+    1. Intro ...................... |EmberLayoutIntro|
+    2. Command .................... |:Emlayout|
+    3. License .................... |EmberLayoutLicense|
+    4. Contributing ............... |EmberLayoutContributing|
+
+==============================================================================
+1. Intro                                                    *EmberLayoutIntro*
+
+This plugin simply takes a base filename in an Ember.js project and will open
+a grid of windows for each realated file.
+
+This curently assumes you want to use page-objects with your testing:
+
+    http://ember-cli-page-object.js.org/
+
+An example for a component called 'foo-bar' you would get a grid with the
+following files loaded:
+
+           +---------+---------+
+           |         |         |
+           |    A    |    C    |
+           |         |         |
+           +---------+---------+
+           |         |         |
+           |    B    |    D    |
+           |         |         |
+           +---------+---------+
+
+           A: app/components/foo-bar.js
+           B: app/templates/components/foo-bar.hbs
+           C: tests/integration/components/foo-bar-test.js
+           D: tests/pages/components/foo-bar.js
+
+This was designed to work with components (integration), controllers
+(acceptance), and any other type (unit). And hopefully will be able to glean
+the correct related files from any of the above types; meaning you can run the
+|:Emlayout| command for any of the above files and the same grid should be
+presented.
+
+==============================================================================
+2. :Emlayout                                                       *:Emlayout*
+
+Use the FILE to open realted files in a grid of windows.
+
+Usage:
+    >
+    :Emlayout [FILE]
+<
+Examples:
+    >
+    :Emlayout
+<
+    Will use the current buffer as the base for related files.
+    >
+    :Emlayout app/components/foo-bar.js
+<
+    Will use 'app/components/foo-bar.js' as the base for related files.
+
+==============================================================================
+3. License                                                *EmberlayoutLicense*
+
+Released under the MIT License.
+
+==============================================================================
+4. Contributing                                      *EmberLayoutContributing*
+
+Contributions are welcomed and appreciated. Just follow the normal Github
+procedure. Go to:
+
+    https://github.com/sukima/vim-emberlayout.vim
+
+Fork the project. Work on what you think would make it better. Send a pull
+request.
