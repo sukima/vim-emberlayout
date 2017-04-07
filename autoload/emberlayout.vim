@@ -51,23 +51,23 @@ function! s:EmberAutoDetectFiles(file)
     if appType == 'templates'
       let appType = remove(parts, 0)
       if appType == 'components'
-        let type = 'component'
+        let type = 'components'
       else
-        let type = 'controller'
+        let type = 'controllers'
       endif
     elseif appType == 'components'
-      let type = 'component'
+      let type = 'components'
     else
       let type = appType
     endif
   elseif base == 'tests'
     let testType = remove(parts, 0)
     if testType == 'acceptance'
-      let type = 'controller'
+      let type = 'controllers'
     elseif testType == 'integration' || testType == 'pages'
       if parts[0] == 'components'
         call remove(parts, 0)
-        let type = 'component'
+        let type = 'components'
       else
         let type = parts[0]
       endif
@@ -84,12 +84,12 @@ function! s:EmberAutoDetectFiles(file)
   call add(parts, filename)
   let fileData = {}
 
-  if type == 'component'
+  if type == 'components'
     let fileData.template = prefix . 'app/templates/components/' . join(parts, '/') . '.hbs'
     let fileData.js = <SID>EmberCoffeeifyFilename(prefix . 'app/components/' . join(parts, '/') . '.js')
     let fileData.test = <SID>EmberCoffeeifyFilename(prefix . 'tests/integration/components/' . join(parts, '/') . '-test.js')
     let fileData.page = <SID>EmberCoffeeifyFilename(prefix . 'tests/pages/components/' . join(parts, '/') . '.js')
-  elseif type == 'controller'
+  elseif type == 'controllers'
     let fileData.template = prefix . 'app/templates/' . join(parts, '/') . '.hbs'
     let fileData.js = <SID>EmberCoffeeifyFilename(prefix . 'app/controllers/' . join(parts, '/') . '.js')
     let fileData.test = <SID>EmberCoffeeifyFilename(prefix . 'tests/acceptance/' . join(parts, '/') . '-test.js')
