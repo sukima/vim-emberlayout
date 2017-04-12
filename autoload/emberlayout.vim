@@ -31,13 +31,31 @@ function! s:EmberCoffeeifyFilename(file)
   endif
 endfunction
 
+function! s:gsub(str,pat,rep) abort
+  return substitute(a:str,'\v\C'.a:pat,a:rep,'g')
+endfunction
+
+function! s:winshell() abort
+  return &shell =~? 'cmd' || exists('+shellslash') && !&shellslash
+endfunction
+
+function! s:shellslash(path) abort
+  if s:winshell()
+    return s:gsub(a:path,'\\','/')
+  else
+    return a:path
+  endif
+endfunction
+
 function! s:EmberAutoDetectFiles(file)
+  let normalizedFile = s:shellslash(a:file)
   let type = ''
-  let relativePath = matchstr(a:file, '\(app\|tests\)/.\+$')
-  let prefixOffset = strridx(a:file, relativePath)
-  let prefix = strpart(a:file, 0, prefixOffset)
+  let relativePath = matchstr(normalizedFile, '\(app\|tests\)/.\+$')
+  let prefixOffset = strridx(normalizedFile, relativePath)
+  let prefix = strpart(normalizedFile, 0, prefixOffset)
   let parts = split(relativePath, '/')
   let base = remove(parts, 0)
+
   let filename = remove(parts, -1)
   let filename = fnamemodify(filename, ':t:r')
 
