@@ -50,7 +50,7 @@ endfunction
 function! s:EmberAutoDetectFiles(file)
   let normalizedFile = s:shellslash(a:file)
   let type = ''
-  let relativePath = matchstr(normalizedFile, '\(app\|tests\)/.\+$')
+  let relativePath = matchstr(normalizedFile, '\(addon\|app\|tests\)/.\+$')
   let prefixOffset = strridx(normalizedFile, relativePath)
   let prefix = strpart(normalizedFile, 0, prefixOffset)
   let parts = split(relativePath, '/')
@@ -64,7 +64,7 @@ function! s:EmberAutoDetectFiles(file)
     let filename = strpart(filename, 0, suffixOffset)
   endif
 
-  if base == 'app'
+  if base == 'addon' || base == 'app'
     let appType = remove(parts, 0)
     if appType == 'templates'
       let appType = remove(parts, 0)
@@ -102,18 +102,24 @@ function! s:EmberAutoDetectFiles(file)
   call add(parts, filename)
   let fileData = {}
 
+  if finddir('addon', prefix) == ''
+    let typeDir = 'app'
+  else
+    let typeDir = 'addon'
+  endif
+
   if type == 'components'
-    let fileData.template = prefix . 'app/templates/components/' . join(parts, '/') . '.hbs'
-    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . 'app/components/' . join(parts, '/') . '.js')
+    let fileData.template = prefix . typeDir . '/templates/components/' . join(parts, '/') . '.hbs'
+    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . typeDir . '/components/' . join(parts, '/') . '.js')
     let fileData.test = <SID>EmberCoffeeifyFilename(prefix . 'tests/integration/components/' . join(parts, '/') . '-test.js')
     let fileData.page = <SID>EmberCoffeeifyFilename(prefix . 'tests/pages/components/' . join(parts, '/') . '.js')
   elseif type == 'controllers'
-    let fileData.template = prefix . 'app/templates/' . join(parts, '/') . '.hbs'
-    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . 'app/controllers/' . join(parts, '/') . '.js')
+    let fileData.template = prefix . typeDir . '/templates/' . join(parts, '/') . '.hbs'
+    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . typeDir . '/controllers/' . join(parts, '/') . '.js')
     let fileData.test = <SID>EmberCoffeeifyFilename(prefix . 'tests/acceptance/' . join(parts, '/') . '-test.js')
     let fileData.page = <SID>EmberCoffeeifyFilename(prefix . 'tests/pages/' . join(parts, '/') . '.js')
   else
-    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . 'app/' . join(parts, '/') . '.js')
+    let fileData.js = <SID>EmberCoffeeifyFilename(prefix . typeDir . '/' . join(parts, '/') . '.js')
     let fileData.test = <SID>EmberCoffeeifyFilename(prefix . 'tests/unit/' . join(parts, '/') . '-test.js')
   endif
 
